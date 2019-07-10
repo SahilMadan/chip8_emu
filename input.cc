@@ -17,12 +17,12 @@ void Input::set(int key, bool state) {
   input_[key] = state;
 }
 
-bool Input::get(int key) {
+bool Input::get(int key) const {
   AssertRange(key);
   return input_[key];
 }
 
-void Input::AssertRange(int key) {
+void Input::AssertRange(int key) const {
   if (key >= input_.size()) {
     throw std::out_of_range("Key out of range: " + std::to_string(key));
   }

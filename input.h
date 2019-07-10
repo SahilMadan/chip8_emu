@@ -10,13 +10,13 @@ class Input {
   Input();
 
   void set(int key, bool state);
-  bool get(int key);
+  bool get(int key) const;
 
  private:
   std::array<bool, 16> input_;
 
   void Reset();
-  void AssertRange(int key);
+  void AssertRange(int key) const;
 };
 
 }  // namespace chip8_emu
