@@ -123,10 +123,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="graphics.cc" />
     <ClCompile Include="input.cc" />
+    <ClCompile Include="sprite.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="pixel_state.h" />
+    <ClInclude Include="sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
