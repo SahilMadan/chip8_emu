@@ -54,6 +54,7 @@ bool Graphics::Draw(int start_x, int start_y, const Sprite& sprite) {
       set(x, y, sprite_pixel);
     }
   }
+  return collision;
 }
 
 void Graphics::AssertPixelPosition(int x, int y) const {

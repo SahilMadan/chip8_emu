@@ -23,7 +23,7 @@ bool Input::get(int key) const {
 }
 
 void Input::AssertRange(int key) const {
-  if (key >= input_.size()) {
+  if (key >= static_cast<int>(input_.size())) {
     throw std::out_of_range("Key out of range: " + std::to_string(key));
   }
 }
