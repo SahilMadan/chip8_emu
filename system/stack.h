@@ -21,4 +21,5 @@ class Stack {
 
 }  // namespace system
 }  // namespace chip8_emu
+
 #endif
