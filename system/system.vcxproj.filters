@@ -32,10 +32,10 @@
     <ClInclude Include="graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sprite.h">
+    <ClInclude Include="pixel_state.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pixel_state.h">
+    <ClInclude Include="sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
