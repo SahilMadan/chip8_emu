@@ -7,6 +7,7 @@ constexpr int kWidth = 64;
 constexpr int kHeight = 32;
 
 namespace chip8_emu {
+namespace system {
 
 const int Graphics::width() { return kWidth; }
 const int Graphics::height() { return kHeight; }
@@ -66,4 +67,5 @@ void Graphics::AssertPixelPosition(int x, int y) const {
 
 int Graphics::GetIndex(int x, int y) const { return y * width() + x; }
 
+}  // namespace system
 }  // namespace chip8_emu

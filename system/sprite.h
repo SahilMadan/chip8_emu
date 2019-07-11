@@ -6,6 +6,7 @@
 #include "pixel_state.h"
 
 namespace chip8_emu {
+namespace system {
 
 class Sprite {
  public:
@@ -21,6 +22,7 @@ class Sprite {
   void AssertPixelPosition(int x, int y) const;
 };
 
+}  // namespace system
 }  // namespace chip8_emu
 
 #endif

@@ -4,6 +4,7 @@
 #include <array>
 
 namespace chip8_emu {
+namespace system {
 
 class Input {
  public:
@@ -19,6 +20,7 @@ class Input {
   void AssertRange(int key) const;
 };
 
+}  // namespace system
 }  // namespace chip8_emu
 
 #endif

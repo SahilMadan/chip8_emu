@@ -3,6 +3,7 @@
 #include <string>
 
 namespace chip8_emu {
+namespace system {
 
 Input::Input() { Reset(); }
 
@@ -28,4 +29,5 @@ void Input::AssertRange(int key) const {
   }
 }
 
+}  // namespace system
 }  // namespace chip8_emu

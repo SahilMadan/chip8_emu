@@ -8,6 +8,7 @@ const int kMaxHeight = 15;
 }
 
 namespace chip8_emu {
+namespace system {
 
 Sprite::Sprite(std::vector<int> bytes) {
   const int height = bytes.size();
@@ -42,5 +43,5 @@ void Sprite::AssertPixelPosition(int x, int y) const {
         "): (" + std::to_string(x) + ", " + std::to_string(y) + ")");
   }
 }
-
+}  // namespace system
 }  // namespace chip8_emu

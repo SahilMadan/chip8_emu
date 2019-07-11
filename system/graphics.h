@@ -6,6 +6,7 @@
 #include "sprite.h"
 
 namespace chip8_emu {
+namespace system {
 
 class Graphics {
  public:
@@ -26,6 +27,7 @@ class Graphics {
   int GetIndex(int x, int y) const;
 };
 
+}  // namespace system
 }  // namespace chip8_emu
 
 #endif
