@@ -22,12 +22,14 @@
     <ClCompile Include="graphics.cc" />
     <ClCompile Include="input.cc" />
     <ClCompile Include="sprite.cc" />
+    <ClCompile Include="stack.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="pixel_state.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="stack.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

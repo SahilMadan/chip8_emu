@@ -11,7 +11,7 @@ namespace chip8_emu {
 namespace system {
 
 Sprite::Sprite(std::vector<int> bytes) {
-  const int height = bytes.size();
+  const int height = static_cast<int>(bytes.size());
   if (height > kMaxHeight) {
     throw std::out_of_range("Invalid sprite height: " +
                             std::to_string(bytes.size()));
@@ -33,7 +33,7 @@ PixelState Sprite::get(int x, int y) const {
   return pixels_[y][x];
 }
 
-int Sprite::height() const { return pixels_.size(); }
+int Sprite::height() const { return static_cast<int>(pixels_.size()); }
 int Sprite::width() const { return 8; }
 
 void Sprite::AssertPixelPosition(int x, int y) const {
