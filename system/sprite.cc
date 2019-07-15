@@ -10,14 +10,14 @@ const int kMaxHeight = 15;
 namespace chip8_emu {
 namespace system {
 
-Sprite::Sprite(std::vector<int> bytes) {
+Sprite::Sprite(std::vector<std::uint8_t> bytes) {
   const int height = static_cast<int>(bytes.size());
   if (height > kMaxHeight) {
     throw std::out_of_range("Invalid sprite height: " +
                             std::to_string(bytes.size()));
   }
 
-  for (const int& byte : bytes) {
+  for (const std::uint8_t& byte : bytes) {
     std::array<PixelState, 8> row;
     for (int i = 0; i < 8; i++) {
       const PixelState pixel_state =

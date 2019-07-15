@@ -1,6 +1,7 @@
 #ifndef CHIP8_EMU_SYSTEM_GRAPHICS_H_
 #define CHIP8_EMU_SYSTEM_GRAPHICS_H_
 
+#include <cstdint>
 #include <vector>
 #include "pixel_state.h"
 #include "sprite.h"
