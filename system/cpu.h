@@ -58,7 +58,7 @@ class Cpu {
   void SetDelayTimerToVx(std::uint16_t opcode);
   void SetSoundTimerToVx(std::uint16_t opcode);
   void AddVxToRegisterI(std::uint16_t opcode);
-  void SetRegisterIToMemoryAddressOfSpriteCharVx(std::uint16_t opcode,
+  void SetRegisterIToMemoryAddressOfCharSpriteVx(std::uint16_t opcode,
                                                  Memory* memory);
   void StoreBinaryCodedDecimalAtVxInMemory(std::uint16_t opcode,
                                            Memory* memory);

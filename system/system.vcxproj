@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="char_sprite_map.cc" />
     <ClCompile Include="cpu.cc" />
     <ClCompile Include="graphics.cc" />
     <ClCompile Include="input.cc" />
@@ -27,6 +28,7 @@
     <ClCompile Include="stack.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="char_sprite_map.h" />
     <ClInclude Include="cpu.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />

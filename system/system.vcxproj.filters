@@ -33,6 +33,9 @@
     <ClCompile Include="memory.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="char_sprite_map.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="char_sprite_map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

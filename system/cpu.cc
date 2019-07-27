@@ -4,6 +4,7 @@
 #include <limits>
 #include <random>
 #include <vector>
+#include "char_sprite_map.h"
 #include "sprite.h"
 
 namespace {
@@ -168,7 +169,7 @@ void Cpu::ExecuteOpcode(std::uint16_t opcode, Graphics* graphics, Input* input,
           AddVxToRegisterI(opcode);
           break;
         case 0x29:
-          SetRegisterIToMemoryAddressOfSpriteCharVx(opcode, memory);
+          SetRegisterIToMemoryAddressOfCharSpriteVx(opcode, memory);
           break;
         case 0x33:
           StoreBinaryCodedDecimalAtVxInMemory(opcode, memory);
@@ -368,9 +369,10 @@ void Cpu::AddVxToRegisterI(std::uint16_t opcode) {
   i_register_ += vx;
 }
 
-void Cpu::SetRegisterIToMemoryAddressOfSpriteCharVx(std::uint16_t opcode,
+void Cpu::SetRegisterIToMemoryAddressOfCharSpriteVx(std::uint16_t opcode,
                                                     Memory* memory) {
-  // TODO(sahilmadan): Implement.
+  i_register_ =
+      char_sprite_map::GetCharSpriteAddr(v_registers_[decode_x(opcode)]);
 }
 
 void Cpu::StoreBinaryCodedDecimalAtVxInMemory(std::uint16_t opcode,
