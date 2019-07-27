@@ -58,7 +58,26 @@ auto random_number =
 namespace chip8_emu {
 namespace system {
 void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
-                             Stack* stack) {}
+                             Stack* stack) {
+  const auto opcode = GetCurrentOpcode(memory);
+  ExecuteOpcode(opcode, graphics, input, memory, stack);
+
+  if (delay_timer_ > 0) {
+    delay_timer_--;
+  }
+
+  if (sound_timer_ > 0) {
+    // TODO(sahilmadan): Implement sound
+    sound_timer_--;
+  }
+
+  pc_ += kInstructionNumBytes;
+}
+
+std::uint16_t Cpu::GetCurrentOpcode(Memory* memory) {
+  return (static_cast<std::uint16_t>(memory->ReadByte(pc_)) << 8) |
+         static_cast<std::uint16_t>(memory->ReadByte(pc_ + 1));
+}
 
 void Cpu::ExecuteOpcode(std::uint16_t opcode, Graphics* graphics, Input* input,
                         Memory* memory, Stack* stack) {

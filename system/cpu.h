@@ -24,6 +24,7 @@ class Cpu {
   std::uint8_t delay_timer_;
   std::uint8_t sound_timer_;
 
+  std::uint16_t GetCurrentOpcode(Memory* memory);
   void ExecuteOpcode(std::uint16_t opcode, Graphics* graphics, Input* input,
                      Memory* memory, Stack* stack);
 
