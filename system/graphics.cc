@@ -12,9 +12,9 @@ namespace system {
 const int Graphics::width() { return kWidth; }
 const int Graphics::height() { return kHeight; }
 
-Graphics::Graphics() { Reset(); }
+Graphics::Graphics() { Clear(); }
 
-void Graphics::Reset() {
+void Graphics::Clear() {
   for (PixelState& pixel : graphics_) {
     pixel = PixelState::kOff;
   }

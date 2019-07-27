@@ -16,14 +16,13 @@ class Graphics {
   PixelState get(int x, int y) const;
 
   bool Draw(int start_x, int start_y, const Sprite& sprite);
+  void Clear();
 
   static const int width();
   static const int height();
 
  private:
   std::vector<PixelState> graphics_;
-
-  void Reset();
   void AssertPixelPosition(int x, int y) const;
   int GetIndex(int x, int y) const;
 };

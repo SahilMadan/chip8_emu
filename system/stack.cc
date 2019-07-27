@@ -11,10 +11,10 @@ Stack::Stack(int stack_size) : sp_(0) {
     throw std::out_of_range("Invalid stack size: " +
                             std::to_string(stack_size));
   }
-  stack_ = std::vector<int>(stack_size, 0);
+  stack_ = std::vector<std::uint16_t>(stack_size, 0);
 }
 
-void Stack::Push(int value) {
+void Stack::Push(std::uint16_t value) {
   if (sp_ >= stack_.size()) {
     throw std::out_of_range("chip8_emu::system::Stack overflow.");
   }
@@ -22,7 +22,7 @@ void Stack::Push(int value) {
   sp_++;
 }
 
-int Stack::Pop() {
+std::uint16_t Stack::Pop() {
   if (sp_ == 0) {
     throw std::out_of_range("chip8_emu::system::Stack empty. Cannot pop.");
   }
@@ -30,7 +30,7 @@ int Stack::Pop() {
   return stack_[sp_];
 }
 
-int Stack::Peek() {
+std::uint16_t Stack::Peek() {
   if (sp_ == 0) {
     throw std::out_of_range("chip8_emu::system::Stack empty. Cannot peek");
   }

@@ -1,5 +1,4 @@
 #include "input.h"
-#include <stdexcept>
 #include <string>
 
 namespace chip8_emu {
@@ -13,20 +12,17 @@ void Input::Reset() {
   }
 }
 
-void Input::set(int key, bool state) {
-  AssertRange(key);
-  input_[key] = state;
-}
+void Input::setIsPressed(std::uint8_t key, bool state) { input_[key] = state; }
 
-bool Input::get(int key) const {
-  AssertRange(key);
-  return input_[key];
-}
+bool Input::getIsPressed(std::uint8_t key) const { return input_[key]; }
 
-void Input::AssertRange(int key) const {
-  if (key >= static_cast<int>(input_.size())) {
-    throw std::out_of_range("Key out of range: " + std::to_string(key));
+std::optional<std::uint8_t> Input::GetPressedKey() const {
+  for (std::uint8_t key = 0; key < 0xF; key++) {
+    if (input_[key]) {
+      return std::optional<std::uint8_t>(key);
+    }
   }
+  return std::nullopt;
 }
 
 }  // namespace system

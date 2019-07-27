@@ -2,6 +2,8 @@
 #define CHIP8_EMU_SYSTEM_INPUT_H_
 
 #include <array>
+#include <cstdint>
+#include <optional>
 
 namespace chip8_emu {
 namespace system {
@@ -10,14 +12,14 @@ class Input {
  public:
   Input();
 
-  void set(int key, bool state);
-  bool get(int key) const;
+  void setIsPressed(std::uint8_t key, bool state);
+  bool getIsPressed(std::uint8_t key) const;
+  std::optional<std::uint8_t> GetPressedKey() const;
 
  private:
   std::array<bool, 16> input_;
 
   void Reset();
-  void AssertRange(int key) const;
 };
 
 }  // namespace system

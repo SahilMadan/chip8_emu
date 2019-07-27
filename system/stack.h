@@ -1,6 +1,7 @@
 #ifndef CHIP8_EMU_SYSTEM_STACK_H_
 #define CHIP8_EMU_SYSTEM_STACK_H_
 
+#include <cstdint>
 #include <vector>
 
 namespace chip8_emu {
@@ -10,12 +11,12 @@ class Stack {
  public:
   Stack(int stack_size);
 
-  void Push(int value);
-  int Pop();
-  int Peek();
+  void Push(std::uint16_t value);
+  std::uint16_t Pop();
+  std::uint16_t Peek();
 
  private:
-  std::vector<int> stack_;
+  std::vector<std::uint16_t> stack_;
   int sp_;
 };
 
