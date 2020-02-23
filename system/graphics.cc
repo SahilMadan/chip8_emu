@@ -3,14 +3,8 @@
 #include <stdexcept>
 #include <string>
 
-constexpr int kWidth = 64;
-constexpr int kHeight = 32;
-
 namespace chip8_emu {
 namespace system {
-
-const int Graphics::width() { return kWidth; }
-const int Graphics::height() { return kHeight; }
 
 Graphics::Graphics() { Clear(); }
 
@@ -34,8 +28,8 @@ PixelState Graphics::get(int x, int y) const {
 }
 
 bool Graphics::Draw(int start_x, int start_y, const Sprite& sprite) {
-  start_x = start_x % width();
-  start_y = start_y % height();
+  start_x = start_x % kWidth;
+  start_y = start_y % kHeight;
 
   bool collision = false;
   for (int sprite_y = 0; sprite_y < sprite.height(); sprite_y++) {
@@ -59,13 +53,13 @@ bool Graphics::Draw(int start_x, int start_y, const Sprite& sprite) {
 }
 
 void Graphics::AssertPixelPosition(int x, int y) const {
-  if (x >= width() || y >= height()) {
+  if (x >= kWidth || y >= kHeight) {
     throw std::out_of_range("Out of range pixel pos: (" + std::to_string(x) +
                             ", " + std::to_string(y) + ")");
   }
 }
 
-int Graphics::GetIndex(int x, int y) const { return y * width() + x; }
+int Graphics::GetIndex(int x, int y) const { return y * kWidth + x; }
 
 }  // namespace system
 }  // namespace chip8_emu
