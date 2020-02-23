@@ -129,7 +129,7 @@ std::size_t GetCharSpriteAddr(std::uint8_t character) {
                             std::to_string(character));
   }
 
-  return character * 5;
+  return static_cast<std::size_t>(character) * 5;
 }
 
 }  // namespace char_sprite_map
