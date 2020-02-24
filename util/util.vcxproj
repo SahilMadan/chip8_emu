@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="rom.cc" />
     <ClCompile Include="window.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="rom.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
