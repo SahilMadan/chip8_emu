@@ -61,6 +61,9 @@ int main(int argc, char** argv) {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
   });
+  
+  is_running.store(false);
+  emu_thread.join();
 
 	return 0;
 }
