@@ -2,7 +2,9 @@
 #define CHIP8_EMU_SYSTEM_CPU_H_
 
 #include <array>
+#include <chrono>
 #include <cstdint>
+#include <mutex>
 #include "graphics.h"
 #include "input.h"
 #include "memory.h"
@@ -13,8 +15,10 @@ namespace system {
 
 class Cpu {
  public:
+  Cpu();
+
   void RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
-                          Stack* stack);
+                          Stack* stack, std::mutex* mutex);
 
  private:
   // Registers
@@ -23,6 +27,7 @@ class Cpu {
   std::uint16_t pc_;
   std::uint8_t delay_timer_;
   std::uint8_t sound_timer_;
+  std::chrono::high_resolution_clock::time_point last_iteration_time_point_;
 
   std::uint16_t GetCurrentOpcode(Memory* memory);
   void ExecuteOpcode(std::uint16_t opcode, Graphics* graphics, Input* input,

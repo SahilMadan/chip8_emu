@@ -37,7 +37,7 @@ int Sprite::height() const { return static_cast<int>(pixels_.size()); }
 int Sprite::width() const { return 8; }
 
 void Sprite::AssertPixelPosition(int x, int y) const {
-  if (x < 0 || x >= 8 || y <= 0 || y >= height()) {
+  if (x < 0 || x >= 8 || y < 0 || y >= height()) {
     throw std::out_of_range(
         "Invalid Sprite Position (height = " + std::to_string(pixels_.size()) +
         "): (" + std::to_string(x) + ", " + std::to_string(y) + ")");

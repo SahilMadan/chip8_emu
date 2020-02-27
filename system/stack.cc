@@ -6,12 +6,8 @@
 namespace chip8_emu {
 namespace system {
 
-Stack::Stack(int stack_size) : sp_(0) {
-  if (stack_size < 12) {
-    throw std::out_of_range("Invalid stack size: " +
-                            std::to_string(stack_size));
-  }
-  stack_ = std::vector<std::uint16_t>(stack_size, 0);
+Stack::Stack() : sp_(0) {
+  stack_ = std::vector<std::uint16_t>(kStackSize, 0);
 }
 
 void Stack::Push(std::uint16_t value) {

@@ -41,10 +41,10 @@ bool Graphics::Draw(int start_x, int start_y, const Sprite& sprite) {
         break;
       }
 
+      const auto sprite_pixel = sprite.get(sprite_x, sprite_y);
+
       const auto x = start_x + sprite_x;
       const auto y = start_y + sprite_y;
-      const auto sprite_pixel = sprite.get(x, y);
-
       collision = collision || (get(x, y) && sprite_pixel);
       set(x, y, sprite_pixel);
     }

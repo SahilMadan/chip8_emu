@@ -3,6 +3,7 @@
 #include <functional>
 #include <limits>
 #include <random>
+#include <thread>
 #include <vector>
 #include "char_sprite_map.h"
 #include "sprite.h"
@@ -57,10 +58,28 @@ auto random_number =
 
 namespace chip8_emu {
 namespace system {
+Cpu::Cpu()
+    : i_register_(0),
+      v_registers_{0},
+      pc_{200},
+      delay_timer_{0},
+      sound_timer_{0} {}
+
 void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
-                             Stack* stack) {
-  const auto opcode = GetCurrentOpcode(memory);
-  ExecuteOpcode(opcode, graphics, input, memory, stack);
+                             Stack* stack, std::mutex* mutex) {
+  const auto now = std::chrono::high_resolution_clock::now();
+  const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+                            now - last_iteration_time_point_)
+                            .count();
+  if (duration < 2000) {
+    std::this_thread::sleep_for(std::chrono::microseconds(2000 - duration));
+  }
+
+  {
+    std::lock_guard<std::mutex> lock(*mutex);
+    const auto opcode = GetCurrentOpcode(memory);
+    ExecuteOpcode(opcode, graphics, input, memory, stack);
+  }
 
   if (delay_timer_ > 0) {
     delay_timer_--;

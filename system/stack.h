@@ -9,7 +9,8 @@ namespace system {
 
 class Stack {
  public:
-  Stack(int stack_size);
+  static constexpr int kStackSize = 12;
+  Stack();
 
   void Push(std::uint16_t value);
   std::uint16_t Pop();
