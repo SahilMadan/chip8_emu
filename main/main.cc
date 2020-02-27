@@ -6,14 +6,13 @@
 
 #include "char_sprite_map.h"
 #include "cpu.h"
+#include "emulator_main.h"
 #include "graphics.h"
 #include "input.h"
 #include "memory.h"
 #include "rom_reader.h"
 #include "stack.h"
 #include "window.h"
-#include "emulator_main.h"
-
 
 int main(int argc, char** argv) {
   std::string window_title = "chip8_emu";
@@ -33,9 +32,8 @@ int main(int argc, char** argv) {
 
   const std::string rom_title = "Tank.ch8";
 
-  std::thread emu_thread(EmulatorMain, rom_title, &cpu, &graphics,
-                         &input, &memory,
-                         &stack, &emu_mutex, &is_running);
+  std::thread emu_thread(EmulatorMain, rom_title, &cpu, &graphics, &input,
+                         &memory, &stack, &emu_mutex, &is_running);
 
   window.MainLoop([]() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
