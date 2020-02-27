@@ -29,5 +29,7 @@ Rom::Rom(const std::string& filename) {
   }
 }
 
+const std::vector<std::uint8_t>& Rom::get() const { return data_; }
+
 }  // namespace util
 }  // namespace chip8_emu

@@ -12,6 +12,8 @@ class Rom {
  public:
   Rom(const std::string& filename);
 
+  const std::vector<std::uint8_t>& get() const;
+
  private:
   std::vector<std::uint8_t> data_;
 };
