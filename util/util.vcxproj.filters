@@ -18,7 +18,7 @@
     <ClCompile Include="window.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rom.cc">
+    <ClCompile Include="rom_reader.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,7 +26,7 @@
     <ClInclude Include="window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rom.h">
+    <ClInclude Include="rom_reader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

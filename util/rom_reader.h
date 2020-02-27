@@ -7,17 +7,11 @@
 
 namespace chip8_emu {
 namespace util {
+namespace rom_reader {
 
-class Rom {
- public:
-  Rom(const std::string& filename);
+std::vector<std::uint8_t> Read(const std::string& loc);
 
-  const std::vector<std::uint8_t>& get() const;
-
- private:
-  std::vector<std::uint8_t> data_;
-};
-
+}
 }  // namespace util
 }  // namespace chip8_emu
 

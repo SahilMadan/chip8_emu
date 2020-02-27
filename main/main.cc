@@ -10,11 +10,12 @@
 #include "graphics.h"
 #include "input.h"
 #include "memory.h"
-#include "rom.h"
+#include "rom_reader.h"
 #include "stack.h"
 #include "window.h"
 
-void EmulatorLoop(const chip8_emu::util::Rom* rom, chip8_emu::system::Cpu* cpu,
+void EmulatorLoop(const std::string& rom_loc,
+                  chip8_emu::system::Cpu* cpu,
                   chip8_emu::system::Graphics* graphics,
                   chip8_emu::system::Input* input,
                   chip8_emu::system::Memory* memory,
@@ -22,7 +23,7 @@ void EmulatorLoop(const chip8_emu::util::Rom* rom, chip8_emu::system::Cpu* cpu,
                   std::atomic_bool* is_running) {
   // Initialize memory.
   chip8_emu::system::char_sprite_map::InitCharSpriteInMemory(memory);
-  const auto rom_data = rom->get();
+  const auto rom_data = chip8_emu::util::rom_reader::Read(rom_loc);
   for (std::size_t i = 0; i < rom_data.size(); i++) {
     memory->WriteByte(memory->kRomStartIndex + i, rom_data[i]);
   }
@@ -44,8 +45,6 @@ int main(int argc, char** argv) {
   int height = 32 * 30;
 
   std::mutex emu_mutex;
-
-  chip8_emu::util::Rom rom("Tank.ch8");
   chip8_emu::util::Window window(width, height, window_title);
   chip8_emu::system::Cpu cpu;
   chip8_emu::system::Graphics graphics;
@@ -56,7 +55,10 @@ int main(int argc, char** argv) {
   std::atomic_bool is_running;
   std::atomic_init(&is_running, true);
 
-  std::thread emu_thread(EmulatorLoop, &rom, &cpu, &graphics, &input, &memory,
+  const std::string rom_title = "Tank.ch8";
+
+  std::thread emu_thread(EmulatorLoop, rom_title, &cpu, &graphics,
+                         &input, &memory,
                          &stack, &emu_mutex, &is_running);
 
   window.MainLoop([]() {
