@@ -2,6 +2,7 @@
 #define CHIP8_EMU_SYSTEM_CHAR_SPRITE_MAP_H_
 
 #include <cstdint>
+
 #include "memory.h"
 
 namespace chip8_emu {

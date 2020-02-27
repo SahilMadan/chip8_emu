@@ -18,7 +18,7 @@ class Rom {
   std::vector<std::uint8_t> data_;
 };
 
-}
+}  // namespace util
 }  // namespace chip8_emu
 
 #endif

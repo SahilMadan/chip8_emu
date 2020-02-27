@@ -4,6 +4,7 @@
 #include <array>
 #include <cstdint>
 #include <vector>
+
 #include "pixel_state.h"
 
 namespace chip8_emu {

@@ -1,12 +1,12 @@
 #ifndef CHIP8_EMU_SYSTEM_GRAPHICS_H_
 #define CHIP8_EMU_SYSTEM_GRAPHICS_H_
 
+#include <array>
 #include <cstdint>
 #include <vector>
+
 #include "pixel_state.h"
 #include "sprite.h"
-
-#include <array>
 
 namespace chip8_emu {
 namespace system {

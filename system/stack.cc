@@ -6,9 +6,7 @@
 namespace chip8_emu {
 namespace system {
 
-Stack::Stack() : sp_(0) {
-  stack_ = std::vector<std::uint16_t>(kStackSize, 0);
-}
+Stack::Stack() : sp_(0) { stack_ = std::vector<std::uint16_t>(kStackSize, 0); }
 
 void Stack::Push(std::uint16_t value) {
   if (sp_ >= stack_.size()) {

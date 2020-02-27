@@ -1,4 +1,5 @@
 #include "input.h"
+
 #include <string>
 
 namespace chip8_emu {

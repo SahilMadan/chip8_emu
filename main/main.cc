@@ -4,13 +4,14 @@
 #include <mutex>
 #include <string>
 #include <thread>
+
 #include "char_sprite_map.h"
 #include "cpu.h"
 #include "graphics.h"
 #include "input.h"
 #include "memory.h"
-#include "stack.h"
 #include "rom.h"
+#include "stack.h"
 #include "window.h"
 
 void EmulatorLoop(const chip8_emu::util::Rom* rom, chip8_emu::system::Cpu* cpu,
@@ -55,15 +56,16 @@ int main(int argc, char** argv) {
   std::atomic_bool is_running;
   std::atomic_init(&is_running, true);
 
-  std::thread emu_thread(EmulatorLoop, &rom, &cpu, &graphics, &input, &memory, &stack, &emu_mutex, &is_running);
+  std::thread emu_thread(EmulatorLoop, &rom, &cpu, &graphics, &input, &memory,
+                         &stack, &emu_mutex, &is_running);
 
   window.MainLoop([]() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
   });
-  
+
   is_running.store(false);
   emu_thread.join();
 
-	return 0;
+  return 0;
 }

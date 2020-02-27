@@ -5,6 +5,7 @@
 #include <random>
 #include <thread>
 #include <vector>
+
 #include "char_sprite_map.h"
 #include "sprite.h"
 
@@ -95,8 +96,8 @@ void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
 
 std::uint16_t Cpu::GetCurrentOpcode(Memory* memory) {
   return (static_cast<std::uint16_t>(memory->ReadByte(pc_)) << 8) |
-      static_cast<std::uint16_t>(
-          memory->ReadByte(static_cast<std::size_t>(pc_) + 1));
+         static_cast<std::uint16_t>(
+             memory->ReadByte(static_cast<std::size_t>(pc_) + 1));
 }
 
 void Cpu::ExecuteOpcode(std::uint16_t opcode, Graphics* graphics, Input* input,
@@ -420,7 +421,8 @@ void Cpu::StoreBinaryCodedDecimalAtVxInMemory(std::uint16_t opcode,
       static_cast<std::size_t>(v_registers_[decode_x(opcode)]);
 
   for (int i = 2; i >= 0; i--) {
-    memory->WriteByte(static_cast<std::size_t>(i_register_) + i, binary_coded_decimal & 1);
+    memory->WriteByte(static_cast<std::size_t>(i_register_) + i,
+                      binary_coded_decimal & 1);
     binary_coded_decimal = binary_coded_decimal >> 1;
   }
 }
