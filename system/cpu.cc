@@ -68,6 +68,8 @@ Cpu::Cpu()
 
 void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
                              Stack* stack, std::mutex* mutex) {
+
+  // TODO(sahilmadan): Replace 500Hz sleep with individual sleep for each instruction.
   const auto now = std::chrono::high_resolution_clock::now();
   const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                             now - last_iteration_time_point_)
@@ -83,12 +85,25 @@ void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
   }
 
   if (delay_timer_ > 0) {
-    delay_timer_--;
+    const auto delay_duration =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            now - last_decrement_delay_time_point_)
+            .count();
+    if (delay_duration < 16667) {
+      delay_timer_--;
+      last_decrement_delay_time_point_ = now;
+    }
   }
 
   if (sound_timer_ > 0) {
-    // TODO(sahilmadan): Implement sound
-    sound_timer_--;
+    const auto sound_duration =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            now - last_decrement_sound_time_point_)
+            .count();
+    if (sound_duration < 16667) {
+      // TODO(sahilmadan): Implement sound
+      sound_timer_--;
+    }
   }
 
   pc_ += kInstructionNumBytes;
@@ -398,6 +413,7 @@ void Cpu::WaitForKeyPressStoreKeyInVx(std::uint16_t opcode, Input* input) {
 
 void Cpu::SetDelayTimerToVx(std::uint16_t opcode) {
   delay_timer_ = v_registers_[decode_x(opcode)];
+  last_decrement_delay_time_point_ = std::chrono::high_resolution_clock::now();
 }
 
 void Cpu::SetSoundTimerToVx(std::uint16_t opcode) {
