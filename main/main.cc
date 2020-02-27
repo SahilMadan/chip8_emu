@@ -31,7 +31,7 @@ void EmulatorLoop(const chip8_emu::util::Rom* rom, chip8_emu::system::Cpu* cpu,
     try {
       cpu->RunSingleIteration(graphics, input, memory, stack, emu_mutex);
     } catch (std::exception e) {
-      std::cout << e.what() << std::endl;
+      std::cerr << e.what() << std::endl;
       abort();
     }
   }
