@@ -282,12 +282,12 @@ void Cpu::SkipInstructionIfVxEqVy(std::uint16_t opcode) {
 }
 
 void Cpu::StoreNnInVx(std::uint16_t opcode) {
-  const auto nn = v_registers_[decode_nn(opcode)];
+  const auto nn = decode_nn(opcode);
   v_registers_[decode_x(opcode)] = nn;
 }
 
 void Cpu::AddNnToVx(std::uint16_t opcode) {
-  const auto nn = v_registers_[decode_nn(opcode)];
+  const auto nn = decode_nn(opcode);
   v_registers_[decode_x(opcode)] += nn;
 }
 
