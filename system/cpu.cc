@@ -62,7 +62,7 @@ namespace system {
 Cpu::Cpu()
     : i_register_(0),
       v_registers_{0},
-      pc_{200},
+      pc_{Memory::kRomStartIndex},
       delay_timer_{0},
       sound_timer_{0} {}
 

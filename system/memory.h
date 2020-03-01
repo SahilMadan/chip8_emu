@@ -9,7 +9,7 @@ namespace system {
 
 class Memory {
  public:
-  static constexpr std::size_t kRomStartIndex = 200;
+  static constexpr std::size_t kRomStartIndex = 0x200;
   static constexpr std::size_t kMemorySize = 4096;
 
   Memory();
