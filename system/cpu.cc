@@ -68,14 +68,15 @@ Cpu::Cpu()
 
 void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
                              Stack* stack, std::mutex* mutex) {
-
-  // TODO(sahilmadan): Replace 500Hz sleep with individual sleep for each instruction.
-  const auto now = std::chrono::high_resolution_clock::now();
+  // TODO(sahilmadan): Replace 500Hz sleep with individual sleep for each
+  // instruction.
+  auto now = std::chrono::high_resolution_clock::now();
   const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                             now - last_iteration_time_point_)
                             .count();
   if (duration < 2000) {
     std::this_thread::sleep_for(std::chrono::microseconds(2000 - duration));
+    now = std::chrono::high_resolution_clock::now();
   }
 
   {
@@ -106,6 +107,7 @@ void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
     }
   }
 
+  last_iteration_time_point_ = now;
   pc_ += kInstructionNumBytes;
 }
 

@@ -28,8 +28,10 @@ class Cpu {
   std::uint16_t pc_;
   std::uint8_t delay_timer_;
   std::uint8_t sound_timer_;
-  std::chrono::high_resolution_clock::time_point last_decrement_delay_time_point_;
-  std::chrono::high_resolution_clock::time_point last_decrement_sound_time_point_;
+  std::chrono::high_resolution_clock::time_point
+      last_decrement_delay_time_point_;
+  std::chrono::high_resolution_clock::time_point
+      last_decrement_sound_time_point_;
   std::chrono::high_resolution_clock::time_point last_iteration_time_point_;
 
   std::uint16_t GetCurrentOpcode(Memory* memory);
