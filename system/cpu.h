@@ -58,7 +58,7 @@ class Cpu {
   void StoreVyShiftLeftToVxVfEqMostSignificantBit(std::uint16_t opcode);
   void SetVxToVySubVxVfEqNotBorrow(std::uint16_t opcode);
   void SkipInstructionIfVxNeqVy(std::uint16_t opcode);
-  void StoreMemoryByteNnnInI(std::uint16_t opcode, const Memory* memory);
+  void StoreNnnInI(std::uint16_t opcode, const Memory* memory);
   void JumpToNnnAddV0(std::uint16_t opcode);
   void SetVxToRandAndNn(std::uint16_t opcode);
   void DrawSprite(std::uint16_t opcode, Graphics* graphics, Memory* memory);

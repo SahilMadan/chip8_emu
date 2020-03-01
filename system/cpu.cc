@@ -185,7 +185,7 @@ void Cpu::ExecuteOpcode(std::uint16_t opcode, Graphics* graphics, Input* input,
       SkipInstructionIfVxNeqVy(opcode);
       break;
     case 0xA:
-      StoreMemoryByteNnnInI(opcode, memory);
+      StoreNnnInI(opcode, memory);
       break;
     case 0xB:
       JumpToNnnAddV0(opcode);
@@ -359,8 +359,8 @@ void Cpu::SkipInstructionIfVxNeqVy(std::uint16_t opcode) {
   }
 }
 
-void Cpu::StoreMemoryByteNnnInI(std::uint16_t opcode, const Memory* memory) {
-  i_register_ = memory->ReadByte(decode_nnn(opcode));
+void Cpu::StoreNnnInI(std::uint16_t opcode, const Memory* memory) {
+  i_register_ = decode_nnn(opcode);
 }
 
 void Cpu::JumpToNnnAddV0(std::uint16_t opcode) {
