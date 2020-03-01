@@ -1,0 +1,134 @@
+#include "renderer.h"
+
+#include <GL/gl3w.h>
+
+#include <array>
+#include <iostream>
+#include <string>
+
+namespace {
+std::string kVertexShader =
+    "#version 330 core\n"
+    "layout (location = 0) in vec3 vertex_pos;\n"
+    "out vec3 color;\n"
+    "void main() {\n"
+    "  gl_Position = vec4(vertex_pos.x, vertex_pos.y, vertex_pos.z, 1.0);\n"
+    "  color = vec3(1.0f, 1.0f, 1.0f);\n"
+    "}\n";
+
+std::string kFragmentShader =
+    "#version 330 core\n"
+    "in vec3 color;\n"
+    "out vec4 FragColor;\n"
+    "void main() {\n"
+    "  FragColor = vec4(color, 1.0f);\n"
+    "}\n";
+}  // namespace
+
+namespace chip8_emu {
+namespace util {
+
+Renderer::Renderer()
+    : vao_(0), vbo_(0), eab_(0), vertex_(0), fragment_(0), program_(0) {
+  vertex_ = CompileShader(kVertexShader, GL_VERTEX_SHADER);
+  fragment_ = CompileShader(kFragmentShader, GL_FRAGMENT_SHADER);
+  program_ = glCreateProgram();
+  glAttachShader(program_, vertex_);
+  glAttachShader(program_, fragment_);
+  glLinkProgram(program_);
+
+  GLint success = 0;
+  glGetProgramiv(program_, GL_LINK_STATUS, &success);
+  if (!success) {
+    GLchar infoLog[512];
+    glGetProgramInfoLog(program_, 512, nullptr, &infoLog[0]);
+    program_ = 0;
+  }
+
+  glGenVertexArrays(1, &vao_);
+  glBindVertexArray(vao_);
+
+  std::array<GLfloat, 12> vertices = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f,
+                                      -0.5f, 0.5f,  0.0f, 0.5f, 0.5f,  0.0f};
+
+  glGenBuffers(1, &vbo_);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0],
+               GL_STATIC_DRAW);
+
+  std::array<GLuint, 6> indices = {0, 1, 2, 1, 3, 2};
+  glGenBuffers(1, &eab_);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eab_);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
+               &indices[0], GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat),
+                        (void*)0);
+  glEnableVertexAttribArray(0);
+
+  glBindVertexArray(0);
+};
+
+Renderer::~Renderer() {
+  if (vao_) {
+    glDeleteVertexArrays(1, &vao_);
+  }
+
+  if (vbo_) {
+    glDeleteBuffers(1, &vbo_);
+  }
+
+  if (eab_) {
+    glDeleteBuffers(1, &eab_);
+  }
+
+  if (vertex_) {
+    glDeleteShader(vertex_);
+  }
+
+  if (fragment_) {
+    glDeleteShader(fragment_);
+  }
+
+  if (program_) {
+    glDeleteProgram(program_);
+  }
+}
+
+void Renderer::BatchSquare() {
+  if (!program_) {
+    return;
+  }
+
+  glEnable(GL_CULL_FACE);
+  glUseProgram(program_);
+
+  glBindVertexArray(vao_);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  glBindVertexArray(0);
+}
+
+void Renderer::Draw() {}
+
+GLuint Renderer::CompileShader(const std::string& shader_content,
+                               GLenum shader_type) {
+  const auto shader = glCreateShader(shader_type);
+  const auto content = shader_content.c_str();
+  glShaderSource(shader, 1, &content, nullptr);
+  glCompileShader(shader);
+
+  GLint success = 0;
+  glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    GLchar infoLog[512];
+    glGetShaderInfoLog(shader, 512, nullptr, &infoLog[0]);
+    std::cerr << "Error compiling shader (" << std::hex << shader_type
+              << "): " << infoLog << "\n";
+    return 0;
+  }
+  return shader;
+}
+
+}  // namespace util
+}  // namespace chip8_emu

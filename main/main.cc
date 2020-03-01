@@ -13,6 +13,7 @@
 #include "rom_reader.h"
 #include "stack.h"
 #include "window.h"
+#include "renderer.h"
 
 int main(int argc, char** argv) {
   std::string window_title = "chip8_emu";
@@ -23,6 +24,7 @@ int main(int argc, char** argv) {
 
   std::mutex emu_mutex;
   chip8_emu::util::Window window(width, height, window_title);
+  chip8_emu::util::Renderer renderer;
   chip8_emu::system::Cpu cpu;
   chip8_emu::system::Graphics graphics;
   chip8_emu::system::Input input;
@@ -37,9 +39,10 @@ int main(int argc, char** argv) {
   std::thread emu_thread(EmulatorMain, rom_title, &cpu, &graphics, &input,
                          &memory, &stack, &emu_mutex, &is_running);
 
-  window.MainLoop([]() {
+  window.MainLoop([&renderer]() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    renderer.BatchSquare();
   });
 
   is_running.store(false);

@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="renderer.cc" />
     <ClCompile Include="rom_reader.cc" />
     <ClCompile Include="window.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="renderer.h" />
     <ClInclude Include="rom_reader.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
