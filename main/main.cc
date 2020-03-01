@@ -16,8 +16,10 @@
 
 int main(int argc, char** argv) {
   std::string window_title = "chip8_emu";
-  int width = 64 * 30;
-  int height = 32 * 30;
+
+  const int kPixelSize = 30;
+  int width = chip8_emu::system::Graphics::kWidth * kPixelSize;
+  int height = chip8_emu::system::Graphics::kHeight * kPixelSize;
 
   std::mutex emu_mutex;
   chip8_emu::util::Window window(width, height, window_title);
