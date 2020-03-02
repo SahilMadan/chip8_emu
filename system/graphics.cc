@@ -33,18 +33,11 @@ bool Graphics::Draw(int start_x, int start_y, const Sprite& sprite) {
 
   bool collision = false;
   for (int sprite_y = 0; sprite_y < sprite.height(); sprite_y++) {
-    if (sprite_y >= kHeight) {
-      break;
-    }
     for (int sprite_x = 0; sprite_x < sprite.width(); sprite_x++) {
-      if (sprite_x >= kWidth) {
-        break;
-      }
-
       const auto sprite_pixel = sprite.get(sprite_x, sprite_y);
 
-      const auto x = start_x + sprite_x;
-      const auto y = start_y + sprite_y;
+      const auto x = (start_x + sprite_x) % kWidth;
+      const auto y = (start_y + sprite_y) % kHeight;
       collision = collision || (get(x, y) && sprite_pixel);
       set(x, y, sprite_pixel);
     }

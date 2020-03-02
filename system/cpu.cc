@@ -380,8 +380,8 @@ void Cpu::DrawSprite(std::uint16_t opcode, Graphics* graphics, Memory* memory) {
     bytes[i] = memory->ReadByte(i + i_register_);
   }
   Sprite sprite = Sprite(bytes);
-  v_registers_[0xF] =
-      graphics->Draw(decode_x(opcode), decode_y(opcode), sprite);
+  v_registers_[0xF] = graphics->Draw(v_registers_[decode_x(opcode)],
+                                     v_registers_[decode_y(opcode)], sprite);
 }
 
 void Cpu::SkipInstructionIfKeyVxIsPressed(std::uint16_t opcode, Input* input) {
