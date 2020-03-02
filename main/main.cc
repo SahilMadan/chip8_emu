@@ -45,9 +45,6 @@ int main(int argc, char** argv) {
                          &memory, &stack, &emu_mutex, &is_running);
 
   window.MainLoop([&renderer, &graphics, &emu_mutex]() {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
     {
       std::unique_lock<std::mutex> lock(emu_mutex);
       for (auto i = 0; i < chip8_emu::system::Graphics::kWidth; i++) {

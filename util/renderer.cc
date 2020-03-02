@@ -102,9 +102,12 @@ void Renderer::Draw() {
     return;
   }
 
-  glEnable(GL_CULL_FACE);
-  glUseProgram(program_);
+  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
 
+  if (batched_squares_.empty()) {
+    return;
+  }
   glBindVertexArray(vao_);
   glBufferData(GL_ARRAY_BUFFER, batched_squares_.size() * sizeof(GLfloat),
                &batched_squares_[0], GL_STATIC_DRAW);
@@ -124,9 +127,11 @@ void Renderer::Draw() {
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
                &indices[0], GL_STATIC_DRAW);
 
+  glEnable(GL_CULL_FACE);
+  glUseProgram(program_);
   glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
-
+  glUseProgram(0);
   batched_squares_.clear();
 }
 

@@ -78,7 +78,6 @@ void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
     std::this_thread::sleep_for(std::chrono::microseconds(2000 - duration));
     now = std::chrono::high_resolution_clock::now();
   }
-
   {
     std::lock_guard<std::mutex> lock(*mutex);
     const auto opcode = GetCurrentOpcode(memory);
@@ -447,18 +446,18 @@ void Cpu::StoreBinaryCodedDecimalAtVxInMemory(std::uint16_t opcode,
 
 void Cpu::StoreV0ToVxInMemory(std::uint16_t opcode, Memory* memory) {
   auto const x = static_cast<std::size_t>(decode_x(opcode));
-  for (std::size_t i = 0; i < x; i++) {
+  for (std::size_t i = 0; i <= x; i++) {
     memory->WriteByte(i_register_ + i, v_registers_[i]);
   }
-  i_register_ = i_register_ + x + 1;
+  i_register_ = i_register_ + x;
 }
 
 void Cpu::FillV0ToVxWithMemory(std::uint16_t opcode, Memory* memory) {
   auto const x = static_cast<std::size_t>(decode_x(opcode));
-  for (std::size_t i = 0; i < x; i++) {
+  for (std::size_t i = 0; i <= x; i++) {
     v_registers_[i] = memory->ReadByte(i_register_ + i);
   }
-  i_register_ = i_register_ + x + 1;
+  i_register_ = i_register_ + x;
 }
 
 }  // namespace system
