@@ -15,6 +15,11 @@
 #include "stack.h"
 #include "window.h"
 
+constexpr float kRenderPixelWidth =
+    1.0f / static_cast<float>(chip8_emu::system::Graphics::kWidth);
+constexpr float kRenderPixelHeight =
+    1.0f / static_cast<float>(chip8_emu::system::Graphics::kHeight);
+
 int main(int argc, char** argv) {
   std::string window_title = "chip8_emu";
 
@@ -39,25 +44,21 @@ int main(int argc, char** argv) {
   std::thread emu_thread(EmulatorMain, rom_title, &cpu, &graphics, &input,
                          &memory, &stack, &emu_mutex, &is_running);
 
-  const float kRenderPixelWidth =
-      1.0f / static_cast<float>(chip8_emu::system::Graphics::kWidth);
-  const float kRenderPixelHeight =
-      1.0f / static_cast<float>(chip8_emu::system::Graphics::kHeight);
-
-  window.MainLoop([&renderer, kRenderPixelWidth, kRenderPixelHeight]() {
+  window.MainLoop([&renderer, &graphics, &emu_mutex]() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    renderer.BatchSquare(0.0f, 0.0f, kRenderPixelWidth, kRenderPixelHeight);
-    renderer.BatchSquare(
-        kRenderPixelWidth * (chip8_emu::system::Graphics::kWidth - 1), 0.0f,
-        kRenderPixelWidth, kRenderPixelHeight);
-    renderer.BatchSquare(
-        0.0f, kRenderPixelHeight * (chip8_emu::system::Graphics::kHeight - 1),
-        kRenderPixelWidth, kRenderPixelHeight);
-    renderer.BatchSquare(
-        kRenderPixelWidth * (chip8_emu::system::Graphics::kWidth - 1),
-        kRenderPixelHeight * (chip8_emu::system::Graphics::kHeight - 1),
-        kRenderPixelWidth, kRenderPixelHeight);
+
+    {
+      std::unique_lock<std::mutex> lock(emu_mutex);
+      for (auto i = 0; i < chip8_emu::system::Graphics::kWidth; i++) {
+        for (auto j = 0; j < chip8_emu::system::Graphics::kHeight; j++) {
+          if (graphics.get(i, j)) {
+            renderer.BatchSquare(i * kRenderPixelWidth, j * kRenderPixelHeight,
+                                 kRenderPixelWidth, kRenderPixelHeight);
+          }
+        }
+      }
+    }
     renderer.Draw();
   });
 
