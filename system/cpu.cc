@@ -5,6 +5,7 @@
 #include <random>
 #include <thread>
 #include <vector>
+#include <iostream>
 
 #include "char_sprite_map.h"
 #include "sprite.h"
@@ -71,6 +72,10 @@ void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
   // TODO(sahilmadan): Replace 500Hz sleep with individual sleep for each
   // instruction.
   auto now = std::chrono::high_resolution_clock::now();
+  if (last_iteration_time_point_ == std::chrono::high_resolution_clock::time_point()) {
+    last_iteration_time_point_ = now;
+  }
+
   const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                             now - last_iteration_time_point_)
                             .count();
@@ -91,7 +96,7 @@ void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
             .count();
     if (delay_duration < 16667) {
       delay_timer_--;
-      last_decrement_delay_time_point_ = now;
+      last_decrement_delay_time_point_ += std::chrono::microseconds(16667);
     }
   }
 
@@ -103,10 +108,11 @@ void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
     if (sound_duration < 16667) {
       // TODO(sahilmadan): Implement sound
       sound_timer_--;
+      last_decrement_sound_time_point_ += std::chrono::microseconds(16667);
     }
   }
 
-  last_iteration_time_point_ = now;
+  last_iteration_time_point_ += std::chrono::microseconds(2000);
   pc_ += kInstructionNumBytes;
 }
 
