@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
   std::atomic_bool is_running;
   std::atomic_init(&is_running, true);
 
-  const std::string rom_title = "Tank.ch8";
+  const std::string rom_title = "Pong.ch8";
 
   std::thread emu_thread(EmulatorMain, rom_title, &cpu, &graphics, &input,
                          &memory, &stack, &emu_mutex, &is_running);
