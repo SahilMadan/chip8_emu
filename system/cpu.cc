@@ -470,7 +470,9 @@ void Cpu::StoreV0ToVxInMemory(std::uint16_t opcode, Memory* memory) {
   for (std::size_t i = 0; i <= x; i++) {
     memory->WriteByte(i_register_ + i, v_registers_[i]);
   }
-  i_register_ = i_register_ + x + 1;
+  if (!use_alternate_instructions_) {
+    i_register_ = i_register_ + x + 1;
+  }
 }
 
 void Cpu::FillV0ToVxWithMemory(std::uint16_t opcode, Memory* memory) {
@@ -478,7 +480,9 @@ void Cpu::FillV0ToVxWithMemory(std::uint16_t opcode, Memory* memory) {
   for (std::size_t i = 0; i <= x; i++) {
     v_registers_[i] = memory->ReadByte(i_register_ + i);
   }
-  i_register_ = i_register_ + x + 1;
+  if (!use_alternate_instructions_) {
+    i_register_ = i_register_ + x + 1;
+  }
 }
 
 }  // namespace system
