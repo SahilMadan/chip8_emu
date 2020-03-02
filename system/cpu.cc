@@ -5,7 +5,6 @@
 #include <random>
 #include <thread>
 #include <vector>
-#include <iostream>
 
 #include "char_sprite_map.h"
 #include "sprite.h"
@@ -65,14 +64,16 @@ Cpu::Cpu()
       v_registers_{0},
       pc_{Memory::kRomStartIndex},
       delay_timer_{0},
-      sound_timer_{0} {}
+      sound_timer_{0},
+      use_alternate_instructions_(true) {}
 
 void Cpu::RunSingleIteration(Graphics* graphics, Input* input, Memory* memory,
                              Stack* stack, std::mutex* mutex) {
   // TODO(sahilmadan): Replace 500Hz sleep with individual sleep for each
   // instruction.
   auto now = std::chrono::high_resolution_clock::now();
-  if (last_iteration_time_point_ == std::chrono::high_resolution_clock::time_point()) {
+  if (last_iteration_time_point_ ==
+      std::chrono::high_resolution_clock::time_point()) {
     last_iteration_time_point_ = now;
   }
 
@@ -324,9 +325,10 @@ void Cpu::SetVxToVxXorVy(std::uint16_t opcode) {
 
 void Cpu::AddVyToVxVfEqCarry(std::uint16_t opcode) {
   const auto x = decode_x(opcode);
-  const auto vx_prev = v_registers_[x];
-  v_registers_[x] = vx_prev + v_registers_[decode_y(opcode)];
-  v_registers_[0xF] = (v_registers_[x] < vx_prev) ? 1 : 0;
+  const auto vx = v_registers_[x];
+  const auto vy = v_registers_[decode_y(opcode)];
+  v_registers_[x] = vx + v_registers_[decode_y(opcode)];
+  v_registers_[0xF] = (v_registers_[x] < vx) ? 1 : 0;
 }
 
 void Cpu::SubVyFromVxVfEqBorrow(std::uint16_t opcode) {
@@ -338,24 +340,36 @@ void Cpu::SubVyFromVxVfEqBorrow(std::uint16_t opcode) {
 }
 
 void Cpu::StoreVyShiftRightToVxVfEqLeastSignificantBit(std::uint16_t opcode) {
+    const auto x = decode_x(opcode);
+  if (use_alternate_instructions_) {
+    const auto vx = v_registers_[x];
+    v_registers_[0xF] = vx & 1;
+    v_registers_[x] = vx / 2;
+    return;
+  }
   const auto vy = v_registers_[decode_y(opcode)];
-  const auto lsb = vy & 1;
-  v_registers_[decode_x(opcode)] = (vy >> 1);
-  v_registers_[0xF] = lsb;
+  v_registers_[0xF] = vy & 1;
+  v_registers_[x] = (vy >> 1);
 }
 
 void Cpu::SetVxToVySubVxVfEqNotBorrow(std::uint16_t opcode) {
   const auto x = decode_x(opcode);
-  const auto vx_prev = v_registers_[x];
-  v_registers_[x] = v_registers_[decode_y(opcode)] - vx_prev;
-  v_registers_[0xF] = (v_registers_[x] > vx_prev) ? 0 : 1;
+  const auto vy = v_registers_[decode_y(opcode)];
+  v_registers_[x] = vy - v_registers_[x];
+  v_registers_[0xF] = (v_registers_[x] > vy) ? 0 : 1;
 }
 
 void Cpu::StoreVyShiftLeftToVxVfEqMostSignificantBit(std::uint16_t opcode) {
+  const auto x = decode_x(opcode);
+  if (use_alternate_instructions_) {
+    const auto vx = v_registers_[x];
+    v_registers_[0xF] = (vx >> 7) & 1;
+    v_registers_[x] = vx * 2;
+    return;
+  }
   const auto vy = v_registers_[decode_y(opcode)];
-  const auto flag = 1 << (8 - 1);
-  const auto msb = vy & flag;
-  v_registers_[decode_x(opcode)] = (vy << 1);
+  const auto msb = (vy >> 7) & 1;
+  v_registers_[x] = (vy << 1);
   v_registers_[0xF] = msb;
 }
 
@@ -456,7 +470,7 @@ void Cpu::StoreV0ToVxInMemory(std::uint16_t opcode, Memory* memory) {
   for (std::size_t i = 0; i <= x; i++) {
     memory->WriteByte(i_register_ + i, v_registers_[i]);
   }
-  i_register_ = i_register_ + x;
+  i_register_ = i_register_ + x + 1;
 }
 
 void Cpu::FillV0ToVxWithMemory(std::uint16_t opcode, Memory* memory) {
@@ -464,7 +478,7 @@ void Cpu::FillV0ToVxWithMemory(std::uint16_t opcode, Memory* memory) {
   for (std::size_t i = 0; i <= x; i++) {
     v_registers_[i] = memory->ReadByte(i_register_ + i);
   }
-  i_register_ = i_register_ + x;
+  i_register_ = i_register_ + x + 1;
 }
 
 }  // namespace system

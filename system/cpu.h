@@ -76,6 +76,8 @@ class Cpu {
   void StoreV0ToVxInMemory(std::uint16_t opcode, Memory* memory);
   void FillV0ToVxWithMemory(std::uint16_t opcode, Memory* memory);
 
+  bool use_alternate_instructions_ = false;
+
   static constexpr std::size_t kInstructionNumBytes = 2;
 };
 
