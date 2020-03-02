@@ -445,8 +445,8 @@ void Cpu::StoreBinaryCodedDecimalAtVxInMemory(std::uint16_t opcode,
 
   for (int i = 2; i >= 0; i--) {
     memory->WriteByte(static_cast<std::size_t>(i_register_) + i,
-                      binary_coded_decimal & 1);
-    binary_coded_decimal = binary_coded_decimal >> 1;
+                      binary_coded_decimal % 10);
+    binary_coded_decimal = binary_coded_decimal / 10;
   }
 }
 
