@@ -13,7 +13,7 @@ std::string kVertexShader =
     "out vec3 color;\n"
     "void main() {\n"
     "  gl_Position = vec4(vertex_pos.x, vertex_pos.y, vertex_pos.z, 1.0);\n"
-    "  color = vec3(1.0f, 1.0f, 1.0f);\n"
+    "  color = vec3(1.0f, 0.5f, 0.2f);\n"
     "}\n";
 
 std::string kFragmentShader =
@@ -48,20 +48,10 @@ Renderer::Renderer()
   glGenVertexArrays(1, &vao_);
   glBindVertexArray(vao_);
 
-  std::array<GLfloat, 12> vertices = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f,
-                                      -0.5f, 0.5f,  0.0f, 0.5f, 0.5f,  0.0f};
-
   glGenBuffers(1, &vbo_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0],
-               GL_STATIC_DRAW);
-
-  std::array<GLuint, 6> indices = {0, 1, 2, 1, 3, 2};
   glGenBuffers(1, &eab_);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eab_);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
-               &indices[0], GL_STATIC_DRAW);
-
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat),
                         (void*)0);
   glEnableVertexAttribArray(0);
@@ -95,7 +85,19 @@ Renderer::~Renderer() {
   }
 }
 
-void Renderer::BatchSquare() {
+void Renderer::BatchSquare(float x, float y, float width, float height) {
+  const GLfloat right_x = -1.0f + x * 2.0f;
+  const GLfloat top_y = 1.0f - (y * 2.0f);
+  const GLfloat left_x = right_x + (width * 2.0f);
+  const GLfloat bottom_y = top_y - (2.0f * height);
+
+  std::array<GLfloat, 12> square = {right_x,  bottom_y, 0.0f,    left_x,
+                                    bottom_y, 0.0f,     right_x, top_y,
+                                    0.0f,     left_x,   top_y,   0.0f};
+  batched_squares_.insert(batched_squares_.end(), square.begin(), square.end());
+}
+
+void Renderer::Draw() {
   if (!program_) {
     return;
   }
@@ -104,12 +106,29 @@ void Renderer::BatchSquare() {
   glUseProgram(program_);
 
   glBindVertexArray(vao_);
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-  glBindVertexArray(0);
-}
+  glBufferData(GL_ARRAY_BUFFER, batched_squares_.size() * sizeof(GLfloat),
+               &batched_squares_[0], GL_STATIC_DRAW);
 
-void Renderer::Draw() {}
+  std::vector<GLuint> indices(batched_squares_.size() / 2);
+  GLuint initial = 0;
+  for (std::size_t i = 0; i < indices.size(); i += 6) {
+    indices[i] = initial;
+    indices[i + 1] = initial + 1;
+    indices[i + 2] = initial + 2;
+    indices[i + 3] = initial + 1;
+    indices[i + 4] = initial + 3;
+    indices[i + 5] = initial + 2;
+
+    initial += 4;
+  }
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
+               &indices[0], GL_STATIC_DRAW);
+
+  glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+  glBindVertexArray(0);
+
+  batched_squares_.clear();
+}
 
 GLuint Renderer::CompileShader(const std::string& shader_content,
                                GLenum shader_type) {

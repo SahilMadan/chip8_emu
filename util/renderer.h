@@ -15,7 +15,9 @@ class Renderer {
   Renderer();
   ~Renderer();
 
-  void BatchSquare();
+  // Batch a square, to be drawn, at location (x, y) with width and height. All
+  // values specified as 0.0f - 1.0f of viewport. Assumes (0,0) is top-left.
+  void BatchSquare(float x, float y, float width, float height);
   void Draw();
 
  private:
@@ -26,7 +28,7 @@ class Renderer {
   GLuint vertex_;
   GLuint fragment_;
   GLuint program_;
-  std::vector<GLfloat> batched_squares;
+  std::vector<GLfloat> batched_squares_;
 };
 
 }  // namespace util
