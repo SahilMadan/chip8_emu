@@ -331,9 +331,10 @@ void Cpu::AddVyToVxVfEqCarry(std::uint16_t opcode) {
 
 void Cpu::SubVyFromVxVfEqBorrow(std::uint16_t opcode) {
   const auto x = decode_x(opcode);
-  const auto vx_prev = v_registers_[x];
-  v_registers_[x] = vx_prev - v_registers_[decode_y(opcode)];
-  v_registers_[0xF] = (v_registers_[x] > vx_prev) ? 1 : 0;
+  const auto vx = v_registers_[x];
+  const auto vy = v_registers_[decode_y(opcode)];
+  v_registers_[x] = vx - vy;
+  v_registers_[0xF] = vy > vx ? 0 : 1;
 }
 
 void Cpu::StoreVyShiftRightToVxVfEqLeastSignificantBit(std::uint16_t opcode) {
