@@ -13,7 +13,7 @@ void Input::Reset() {
   }
 }
 
-void Input::setIsPressed(std::uint8_t key, bool state) { input_[key] = state; }
+void Input::SetIsPressed(std::uint8_t key, bool state) { input_[key] = state; }
 
 bool Input::getIsPressed(std::uint8_t key) const { return input_[key]; }
 

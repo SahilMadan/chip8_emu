@@ -52,13 +52,17 @@ Window::~Window() {
   glfwTerminate();
 }
 
-void Window::MainLoop(std::function<void()> render_task) {
+void Window::Run(std::function<void()> loop_task) {
   while (!glfwWindowShouldClose(window_)) {
     ProcessInput();
-    render_task();
+    loop_task();
     glfwSwapBuffers(window_);
     glfwPollEvents();
   }
+}
+
+bool Window::IsPressed(Keyboard key) const {
+  return glfwGetKey(window_, static_cast<int>(key));
 }
 
 void Window::glfwErrorCallback(int error, const char* description) {

@@ -12,7 +12,7 @@ class Input {
  public:
   Input();
 
-  void setIsPressed(std::uint8_t key, bool state);
+  void SetIsPressed(std::uint8_t key, bool state);
   bool getIsPressed(std::uint8_t key) const;
   std::optional<std::uint8_t> GetPressedKey() const;
 
